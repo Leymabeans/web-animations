@@ -1,6 +1,6 @@
 {
     "version": 3,
-    "mappings": "ACAA,AAAA,IAAI,CAAC;EACH,MAAM,EAAE,CAAC;CACV",
+    "mappings": "ACAA,AAAA,IAAI,CAAC;EACH,MAAM,EAAE,IAAI;EACZ,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,CAAC;CACV;;AAED,AAAA,mBAAmB,CAAC;EAClB,OAAO,EAAE,IAAI;CACd",
     "sources": [
         "index.scss",
         "components/_canvas.scss"
