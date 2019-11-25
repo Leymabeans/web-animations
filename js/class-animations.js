@@ -1,27 +1,41 @@
-//Variables----------
+//Variables------------------
 var canvas = document.querySelector('canvas');
 var c = canvas.getContext('2d');
-var circleArray = [];
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+maxRadius = 40;
+minRadius = 2;
+var circleArray = [];
+var colorArray = [
+  '#C9DAE',
+  '#03F7EE', 
+  '#00B295', 
+  '#191516', 
+  '#AB2346'
+];
+var mouse = {
+  x: undefined, y:undefined
+}
 
 
-//Establish circle---
+//Establish circle-----------
 function Circle(x, y, dx, dy, radius) {
   this.x = x;
   this.y = y;
   this.dx = dx;
   this.dy = dy;
   this.radius = radius;
+  this.color = colorArray[Math.floor(Math.random() * colorArray.length)];
 
+  //Draw circles
   this.draw = function() {
     c.beginPath();
     c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-    c.strokeStyle = 'blue';
-    c.stroke();
+    c.fillStyle = this.color;
     c.fill();
   }
 
+  //Check parameters
   this.update = function() {
     if(this.x + this.radius > innerWidth || this.x - this.radius < 0) {
       this.dx = -this.dx;
@@ -31,24 +45,34 @@ function Circle(x, y, dx, dy, radius) {
     }
     this.x += this.dx;
     this.y += this.dy;
+
+    if (mouse.x - this.x < 50 && mouse.x - this.x > -50 && mouse.y - this.y < 50 && mouse.y - this.y > -50) {
+      if (this.radius < maxRadius) {
+        this.radius += 1;
+      }
+    }
+    else if (this.radius > minRadius) {
+      this.radius -= 1;
+    }
+
     this.draw();
   }
 }
 
 
-//Create circles-----
-for(var i=0; i < 60; i++) {
+//Create 150 circles---------
+for(var i=0; i < 150; i++) {
   var x = Math.random() * (innerWidth - radius * 2) + radius;
   var y = Math.random() * (innerHeight - radius * 2) + radius;
-  var dx = (Math.random() - 0.5) * 9;
-  var dy = (Math.random() - 0.5) * 8;
-  var radius = 30;
+  var dx = (Math.random() - 0.5) * 4;
+  var dy = (Math.random() - 0.5) * 5;
+  var radius = Math.random() * 3 + 1;
   var color = 'rgba(255, 0, 0, 0.9)';
   circleArray.push(new Circle(x, y, dx, dy, radius));
 }
 
 
-//Animation----------
+//Animate circles------------------
 function animate() {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, innerWidth, innerHeight);
@@ -58,3 +82,11 @@ function animate() {
   }
 }
 animate();
+
+
+//Mouse Over-----------------
+window.addEventListener('mousemove', function(event) {
+  mouse.x = event.x;
+  mouse.y = event.y;
+  console.log(mouse.x);
+});
