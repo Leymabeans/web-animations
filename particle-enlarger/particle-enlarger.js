@@ -13,8 +13,9 @@ var colorArray = [
   '#AB2346'
 ];
 var mouse = {
-  x: undefined, y:undefined
-}
+  x: undefined, 
+  y:undefined
+};
 
 
 
@@ -110,6 +111,6 @@ window.addEventListener('resize', function() {
 
 
 
-//Functions to create circles and animate--------
+//Calls creation and animation functions---------
 init();
 animate();
