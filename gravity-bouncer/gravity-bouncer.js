@@ -4,6 +4,8 @@ var c = canvas.getContext('2d');
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 var ball;
+var gravity = 1;
+var friction = 0.93;
 var colorArray = [
   '#C9DAE',
   '#03F7EE', 
@@ -17,18 +19,16 @@ var mouse = {
 };
 
 
+
 //Establish ball structure-----------------------
-function Ball(x, y, radius, color) {
+function Ball(x, y, dy, dx, radius, color) {
   //Ball variables
   this.x = x;
   this.y = y;
+  this.dy = dy;
+  this.dx = dx;
   this.radius = radius;
   this.color = color;
-
-  //Check parameters
-  this.update = function() {
-    this.draw();
-  }
 
   //Draw balls
   this.draw = function() {
@@ -38,12 +38,24 @@ function Ball(x, y, radius, color) {
     c.fill();
     c.closePath();
   }
+
+  //Check parameters
+  this.update = function() {
+    if(this.y + this.radius > canvas.height) {
+      this.dy = -this.dy * friction;
+    }
+    else {
+      this.dy += gravity;
+    }
+    this.y += this.dy;
+    this.draw();
+  }
 }
 
 
 //Create balls-----------------------------------
 function init() {
-  ball = new Ball(canvas.width / 2, canvas.height / 2, 30, 'red');
+  ball = new Ball(canvas.width / 2, canvas.height / 2, 2, 2, 30, 'red');
   console.log(ball);
 }
 
