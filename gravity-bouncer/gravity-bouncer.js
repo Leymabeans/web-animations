@@ -13,6 +13,7 @@ var colorArray = [
   '#191516', 
   '#AB2346'
 ];
+var ballArray = [];
 var mouse = {
   x: innerWidth / 2, 
   y: innerHeight / 2
@@ -21,12 +22,12 @@ var mouse = {
 
 
 //Establish ball structure-----------------------
-function Ball(x, y, dy, dx, radius, color) {
+function Ball(x, y, dx, dy, radius, color) {
   //Ball variables
   this.x = x;
   this.y = y;
-  this.dy = dy;
   this.dx = dx;
+  this.dy = dy;
   this.radius = radius;
   this.color = color;
 
@@ -36,17 +37,19 @@ function Ball(x, y, dy, dx, radius, color) {
     c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
     c.fillStyle = this.color;
     c.fill();
+    c.stroke();
     c.closePath();
   }
 
   //Check parameters
   this.update = function() {
-    if(this.y + this.radius > canvas.height) {
+    if(this.y + this.radius + this.dy > canvas.height) {
       this.dy = -this.dy * friction;
     }
     else {
       this.dy += gravity;
     }
+    this.x += this.dx;
     this.y += this.dy;
     this.draw();
   }
@@ -55,8 +58,14 @@ function Ball(x, y, dy, dx, radius, color) {
 
 //Create balls-----------------------------------
 function init() {
-  ball = new Ball(canvas.width / 2, canvas.height / 2, 2, 2, 30, 'red');
-  console.log(ball);
+  var radius = 30;
+  for (var i = 0; i < 100; i++) {
+    var x = randomIntFromRange(0, canvas.width);
+    var y = randomIntFromRange(0, canvas.height - radius);
+    var dx= randomIntFromRange(-2, 2);
+    ballArray.push(new Ball(x, y, dx, 3, 30, 'red'));
+  }
+  console.log(ballArray);
 }
 
 
@@ -64,7 +73,9 @@ function init() {
 function animate() {
   requestAnimationFrame(animate);
   c.clearRect(0,0, canvas.width, canvas.height);
-  ball.update();
+  for (var i = 0; i < ballArray.length; i++){
+    ballArray[i].update();
+  }
 }
 
 
