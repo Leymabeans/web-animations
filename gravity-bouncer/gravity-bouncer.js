@@ -5,7 +5,7 @@ canvas.width = innerWidth;
 canvas.height = innerHeight;
 var ball;
 var gravity = 1;
-var friction = 0.93;
+var friction = 0.9;
 var colorArray = [
   '#C9DAE',
   '#03F7EE', 
@@ -49,6 +49,9 @@ function Ball(x, y, dx, dy, radius, color) {
     else {
       this.dy += gravity;
     }
+    if (this.x + this.radius + this.dx > canvas.width || this.x - this.radius <= 0) {
+      this.dx = -this.dx;
+    }
     this.x += this.dx;
     this.y += this.dy;
     this.draw();
@@ -58,12 +61,15 @@ function Ball(x, y, dx, dy, radius, color) {
 
 //Create balls-----------------------------------
 function init() {
-  var radius = 30;
+  ballArray = [];
   for (var i = 0; i < 100; i++) {
-    var x = randomIntFromRange(0, canvas.width);
+    var x = randomIntFromRange(radius, canvas.width - radius);
     var y = randomIntFromRange(0, canvas.height - radius);
     var dx= randomIntFromRange(-2, 2);
-    ballArray.push(new Ball(x, y, dx, 3, 30, 'red'));
+    var dy= randomIntFromRange(-2, 2);
+    var radius= randomIntFromRange(15, 30);
+    var color = randomColor(colorArray);
+    ballArray.push(new Ball(x, y, dx, dy, radius, color));
   }
   console.log(ballArray);
 }
@@ -87,7 +93,7 @@ function randomIntFromRange(min, max) {
 
 //Outputs random color from the color array------
 function randomColor(colorArray) {
-  return colors[Math.floor(Math.random() * colors.length)];
+  return colorArray[Math.floor(Math.random() * colorArray.length)];
 }
 
 
@@ -98,12 +104,13 @@ addEventListener('mousemove', function(event) {
   mouse.y = event.clientY;
 });
 
-//Change canvas width when on page resize--------
+//Resize canvas on page resize, restart animation
 addEventListener('resize', function() {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
   init();
 });
+
 
 
 //Calls creation and animation functions---------
