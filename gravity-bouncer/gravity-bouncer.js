@@ -111,6 +111,10 @@ addEventListener('resize', function() {
   init();
 });
 
+//On page click, restart animation---------------
+addEventListener('click', function() {
+  init();
+})
 
 
 //Calls creation and animation functions---------
